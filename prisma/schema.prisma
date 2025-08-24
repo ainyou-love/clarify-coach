@@ -30,10 +30,10 @@ model PracticeSession {
   userId      String
   topic       String
   goal        String
-  mainPoints  String[]
+  mainPoints  String   // Will store as JSON string
   pitch       String
   score       Int
-  feedback    Json
+  feedback    String   // Will store as JSON string
   createdAt   DateTime @default(now())
   
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
