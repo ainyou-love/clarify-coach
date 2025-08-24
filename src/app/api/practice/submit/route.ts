@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { auth } from '@/lib/auth/auth';
 import { z } from 'zod';
-import { authOptions } from '@/lib/auth/auth-config';
 import { prisma } from '@/lib/prisma';
 import { aiRouter } from '@/lib/ai';
 import { PracticeInput, FeedbackResponse } from '@/lib/ai/types';
@@ -17,7 +16,7 @@ const practiceSubmissionSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Authentication required' },

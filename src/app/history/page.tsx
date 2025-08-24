@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Header } from '@/components/layout/Header';
 import { SessionDetailModal } from '@/components/history/SessionDetailModal';
 import { 
   CalendarDays, 
@@ -180,13 +181,16 @@ export default function HistoryPage() {
 
   if (status === 'loading' || (loading && sessions.length === 0)) {
     return (
-      <div className="container max-w-6xl mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Practice History</h1>
-          <p className="text-muted-foreground mt-2">Loading your practice sessions...</p>
-        </div>
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen">
+        <Header />
+        <div className="container max-w-6xl mx-auto py-8 px-4">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Practice History</h1>
+            <p className="text-muted-foreground mt-2">Loading your practice sessions...</p>
+          </div>
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
         </div>
       </div>
     );
@@ -194,25 +198,30 @@ export default function HistoryPage() {
 
   if (error) {
     return (
-      <div className="container max-w-6xl mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Practice History</h1>
-          <p className="text-muted-foreground mt-2">Review your past practice sessions</p>
+      <div className="min-h-screen">
+        <Header />
+        <div className="container max-w-6xl mx-auto py-8 px-4">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Practice History</h1>
+            <p className="text-muted-foreground mt-2">Review your past practice sessions</p>
+          </div>
+          <Card className="max-w-md mx-auto">
+            <CardContent className="p-6 text-center">
+              <p className="text-red-600 mb-4">{error}</p>
+              <Button onClick={() => fetchHistory()} variant="outline">
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-        <Card className="max-w-md mx-auto">
-          <CardContent className="p-6 text-center">
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={() => fetchHistory()} variant="outline">
-              Try Again
-            </Button>
-          </CardContent>
-        </Card>
       </div>
     );
   }
 
   return (
-    <div className="container max-w-6xl mx-auto py-8 px-4">
+    <div className="min-h-screen">
+      <Header />
+      <div className="container max-w-6xl mx-auto py-8 px-4">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Practice History</h1>
         <p className="text-muted-foreground mt-2">
@@ -468,6 +477,7 @@ export default function HistoryPage() {
           setSelectedSession(null);
         }}
       />
+      </div>
     </div>
   );
 }

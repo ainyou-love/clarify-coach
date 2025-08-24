@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Header } from '@/components/layout/Header';
 import { StreakCounter } from '@/components/dashboard/StreakCounter';
 import { ScoreCard } from '@/components/dashboard/ScoreCard';
 import { ProgressChart } from '@/components/dashboard/ProgressChart';
@@ -72,6 +73,7 @@ export default function DashboardPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+        <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-center items-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -84,6 +86,7 @@ export default function DashboardPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+        <Header />
         <div className="container mx-auto px-4 py-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
@@ -102,6 +105,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+      <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">

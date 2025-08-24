@@ -1,103 +1,285 @@
-import Image from "next/image";
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { 
+  MessageCircle, 
+  Target, 
+  BarChart3, 
+  Brain, 
+  CheckCircle,
+  ArrowRight,
+  Star,
+  Users,
+  Clock,
+  TrendingUp,
+  Zap,
+  Shield
+} from 'lucide-react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      router.push('/dashboard');
+    }
+  }, [session, status, router]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (session) {
+    return null; // Will redirect to dashboard
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header variant="landing" />
+      
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-center">
+            <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
+              <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl lg:text-6xl">
+                Master{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Clear Communication
+                </span>{' '}
+                with AI
+              </h1>
+              <p className="mt-6 text-xl text-gray-600 sm:max-w-3xl">
+                Transform your professional communication skills through daily practice. 
+                Get instant AI feedback, track your progress, and build confidence in every conversation.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-center lg:justify-start">
+                <Link href="/auth/register">
+                  <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    Get Started Free
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/auth/login">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
+              <div className="mt-6 flex items-center text-sm text-gray-500 sm:justify-center lg:justify-start">
+                <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                No credit card required
+              </div>
+            </div>
+            <div className="mt-16 lg:mt-0 lg:col-span-6">
+              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div className="space-y-4">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-700">"I need to present our quarterly results to the board..."</p>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-green-700">AI Analysis</span>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                        <span className="text-sm text-gray-600">8.5/10</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-700">Great structure! Try opening with the key insight to grab attention immediately.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              Everything you need to communicate with confidence
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Powerful features designed to accelerate your communication improvement
+            </p>
+          </div>
+          
+          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-blue-100 rounded-xl mx-auto mb-4">
+                <Brain className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">AI-Powered Feedback</h3>
+              <p className="text-gray-600">
+                Get instant, personalized feedback on clarity, structure, and impact from advanced AI.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-purple-100 rounded-xl mx-auto mb-4">
+                <Target className="h-8 w-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Structured Practice</h3>
+              <p className="text-gray-600">
+                Daily practice sessions focused on real-world scenarios you encounter at work.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-green-100 rounded-xl mx-auto mb-4">
+                <BarChart3 className="h-8 w-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Progress Tracking</h3>
+              <p className="text-gray-600">
+                Monitor your improvement over time with detailed analytics and achievement badges.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-yellow-100 rounded-xl mx-auto mb-4">
+                <Zap className="h-8 w-8 text-yellow-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Quick Sessions</h3>
+              <p className="text-gray-600">
+                Improve in just 5-10 minutes a day with bite-sized practice sessions.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-indigo-100 rounded-xl mx-auto mb-4">
+                <TrendingUp className="h-8 w-8 text-indigo-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Personalized Goals</h3>
+              <p className="text-gray-600">
+                Set and track custom goals that align with your professional development needs.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-16 h-16 bg-red-100 rounded-xl mx-auto mb-4">
+                <Shield className="h-8 w-8 text-red-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Private & Secure</h3>
+              <p className="text-gray-600">
+                Your practice sessions and data are completely private and secure.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+              How it works
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Start improving your communication in three simple steps
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3">
+            <div className="text-center">
+              <div className="flex justify-center items-center w-12 h-12 bg-blue-600 text-white rounded-full mx-auto mb-6 text-xl font-bold">
+                1
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Choose Your Scenario</h3>
+              <p className="text-gray-600">
+                Select from common workplace communication scenarios or create your own custom practice topic.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-12 h-12 bg-blue-600 text-white rounded-full mx-auto mb-6 text-xl font-bold">
+                2
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Practice & Record</h3>
+              <p className="text-gray-600">
+                Write or speak your response, focusing on clarity, structure, and key messages you want to convey.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="flex justify-center items-center w-12 h-12 bg-blue-600 text-white rounded-full mx-auto mb-6 text-xl font-bold">
+                3
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Get AI Feedback</h3>
+              <p className="text-gray-600">
+                Receive instant, actionable feedback with suggestions for improvement and alternative approaches.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-8 md:grid-cols-4 text-center">
+            <div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">10k+</div>
+              <div className="text-gray-600">Practice Sessions</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">95%</div>
+              <div className="text-gray-600">User Satisfaction</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-green-600 mb-2">2.5x</div>
+              <div className="text-gray-600">Faster Improvement</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-yellow-600 mb-2">24/7</div>
+              <div className="text-gray-600">Available</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+            Ready to transform your communication?
+          </h2>
+          <p className="mt-4 text-xl text-blue-100">
+            Join thousands of professionals who have improved their communication skills with Clarity Coach
+          </p>
+          <div className="mt-8">
+            <Link href="/auth/register">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
+                Start Your Journey Today
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+          <p className="mt-4 text-blue-100">
+            No credit card required • Start practicing in 30 seconds
+          </p>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

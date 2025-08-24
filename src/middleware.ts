@@ -1,20 +1,11 @@
-import { withAuth } from "next-auth/middleware"
-import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth/auth"
 
-export default withAuth(
-  function middleware(req) {
-    // Additional middleware logic can go here
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: "/auth/login",
-    },
+export default auth((req) => {
+  // Additional middleware logic can go here
+  if (!req.auth && req.nextUrl.pathname !== "/auth/login") {
+    return Response.redirect(new URL("/auth/login", req.url))
   }
-)
+})
 
 export const config = {
   matcher: [

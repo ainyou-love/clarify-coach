@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Header } from "@/components/layout/Header"
 import { TopicSelector } from "@/components/practice/TopicSelector"
 import { GoalInput } from "@/components/practice/GoalInput"
 import { MainPointsList } from "@/components/practice/MainPointsList"
@@ -115,26 +116,31 @@ export default function PracticePage() {
 
   if (feedback) {
     return (
-      <div className="container max-w-6xl mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Your Practice Results</h1>
-          <p className="text-muted-foreground mt-2">
-            Here's your personalized feedback and analysis
-          </p>
-        </div>
+      <div className="min-h-screen">
+        <Header />
+        <div className="container max-w-6xl mx-auto py-8 px-4">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold">Your Practice Results</h1>
+            <p className="text-muted-foreground mt-2">
+              Here's your personalized feedback and analysis
+            </p>
+          </div>
 
-        <FeedbackDisplay 
-          feedback={feedback}
-          isLoading={false}
-          error={null}
-          onRetry={handleRetry}
-        />
+          <FeedbackDisplay 
+            feedback={feedback}
+            isLoading={false}
+            error={null}
+            onRetry={handleRetry}
+          />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container max-w-4xl mx-auto py-8 px-4">
+    <div className="min-h-screen">
+      <Header />
+      <div className="container max-w-4xl mx-auto py-8 px-4">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Practice Session</h1>
         <p className="text-muted-foreground mt-2">
@@ -259,6 +265,7 @@ export default function PracticePage() {
           </form>
         </Form>
       )}
+      </div>
     </div>
   )
 }
