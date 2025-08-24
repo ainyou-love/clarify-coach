@@ -393,7 +393,11 @@ export default function HistoryPage() {
           ) : (
             <div className="space-y-4">
               {sessions.map((session) => (
-                <Card key={session.id} className="cursor-pointer hover:shadow-md transition-shadow">
+                <Card 
+                  key={session.id} 
+                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => openSessionDetail(session)}
+                >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1 space-y-2">
@@ -422,7 +426,10 @@ export default function HistoryPage() {
                         </p>
                       </div>
                       <Button
-                        onClick={() => openSessionDetail(session)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openSessionDetail(session);
+                        }}
                         variant="outline"
                         size="sm"
                         className="ml-4"

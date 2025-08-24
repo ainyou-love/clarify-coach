@@ -1,11 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { CalendarDays, Target, MessageSquare, Star } from 'lucide-react';
+import { CalendarDays, Target, MessageSquare, Star, Expand } from 'lucide-react';
 import { FeedbackData } from '@/types/feedback';
 
 interface PracticeSessionDetail {
@@ -27,6 +29,8 @@ interface SessionDetailModalProps {
 }
 
 export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailModalProps) {
+  const router = useRouter();
+  
   if (!session) return null;
 
   const formatDate = (dateString: string) => {
@@ -47,18 +51,36 @@ export function SessionDetailModal({ session, isOpen, onClose }: SessionDetailMo
     return 'text-red-600 bg-red-50';
   };
 
+  const handleExpandToFullPage = () => {
+    onClose();
+    router.push(`/history/${session.id}`);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-2">
-          <DialogTitle className="text-2xl flex items-center gap-2">
-            <MessageSquare className="h-6 w-6" />
-            Practice Session Details
-          </DialogTitle>
-          <DialogDescription className="flex items-center gap-2 text-base">
-            <CalendarDays className="h-4 w-4" />
-            {formatDate(session.createdAt)}
-          </DialogDescription>
+          <div className="flex items-start justify-between">
+            <div>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <MessageSquare className="h-6 w-6" />
+                Practice Session Details
+              </DialogTitle>
+              <DialogDescription className="flex items-center gap-2 text-base mt-2">
+                <CalendarDays className="h-4 w-4" />
+                {formatDate(session.createdAt)}
+              </DialogDescription>
+            </div>
+            <Button
+              onClick={handleExpandToFullPage}
+              variant="outline"
+              size="sm"
+              className="mt-1"
+            >
+              <Expand className="h-4 w-4 mr-2" />
+              Full Page
+            </Button>
+          </div>
         </DialogHeader>
 
         <ScrollArea className="px-6 pb-6 max-h-[calc(90vh-120px)]">
