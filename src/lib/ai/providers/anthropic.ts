@@ -20,6 +20,12 @@ export class AnthropicProvider implements AIProvider {
     try {
       const prompt = FEEDBACK_GENERATION_PROMPT(input);
 
+      // Debug log the input
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Anthropic] Input:', JSON.stringify(input, null, 2));
+        console.log('[Anthropic] Prompt sent:', prompt);
+      }
+
       const response = await this.client.messages.create({
         model: this.model,
         max_tokens: 4000,
@@ -38,13 +44,36 @@ export class AnthropicProvider implements AIProvider {
         throw this.createAIError('Invalid response type from Anthropic', 'INVALID_RESPONSE');
       }
 
-      const feedbackText = content.text.trim();
+      let feedbackText = content.text.trim();
+      
+      // Debug log the raw response
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Anthropic] Raw response:', feedbackText);
+      }
+
+      // Clean up the response - remove markdown code blocks if present
+      // Handle multiple formats: ```json, ```, or just raw JSON
+      if (feedbackText.startsWith('```')) {
+        // Remove opening code block (with or without 'json' label)
+        feedbackText = feedbackText.replace(/^```(?:json)?\s*\n?/, '');
+        // Remove closing code block
+        feedbackText = feedbackText.replace(/\n?```\s*$/, '');
+        // Trim any remaining whitespace
+        feedbackText = feedbackText.trim();
+      }
       
       // Parse JSON response
       let feedbackData: FeedbackResponse;
       try {
         feedbackData = JSON.parse(feedbackText);
+        
+        // Debug log the parsed response
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Anthropic] Parsed response:', JSON.stringify(feedbackData, null, 2));
+        }
       } catch (parseError) {
+        // Log the exact text that failed to parse for debugging
+        console.error('[Anthropic] Failed to parse JSON. Text was:', feedbackText);
         throw this.createAIError(
           `Failed to parse Anthropic response as JSON: ${parseError}`,
           'PARSE_ERROR'

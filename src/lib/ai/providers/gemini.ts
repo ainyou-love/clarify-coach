@@ -24,6 +24,12 @@ export class GeminiProvider implements AIProvider {
     try {
       const prompt = FEEDBACK_GENERATION_PROMPT(input);
 
+      // Debug log the input
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Gemini] Input:', JSON.stringify(input, null, 2));
+        console.log('[Gemini] Prompt sent:', prompt);
+      }
+
       const result = await this.model.generateContent({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: {
@@ -39,13 +45,36 @@ export class GeminiProvider implements AIProvider {
         throw this.createAIError('No response received from Gemini', 'NO_RESPONSE');
       }
 
-      const feedbackText = response.text().trim();
+      let feedbackText = response.text().trim();
+      
+      // Debug log the raw response
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Gemini] Raw response:', feedbackText);
+      }
+
+      // Clean up the response - remove markdown code blocks if present
+      // Handle multiple formats: ```json, ```, or just raw JSON
+      if (feedbackText.startsWith('```')) {
+        // Remove opening code block (with or without 'json' label)
+        feedbackText = feedbackText.replace(/^```(?:json)?\s*\n?/, '');
+        // Remove closing code block
+        feedbackText = feedbackText.replace(/\n?```\s*$/, '');
+        // Trim any remaining whitespace
+        feedbackText = feedbackText.trim();
+      }
       
       // Parse JSON response
       let feedbackData: FeedbackResponse;
       try {
         feedbackData = JSON.parse(feedbackText);
+        
+        // Debug log the parsed response
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Gemini] Parsed response:', JSON.stringify(feedbackData, null, 2));
+        }
       } catch (parseError) {
+        // Log the exact text that failed to parse for debugging
+        console.error('[Gemini] Failed to parse JSON. Text was:', feedbackText);
         throw this.createAIError(
           `Failed to parse Gemini response as JSON: ${parseError}`,
           'PARSE_ERROR'
