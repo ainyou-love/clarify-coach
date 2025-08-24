@@ -11,6 +11,7 @@ const server = z.object({
   AI_PROVIDER: z.enum(["anthropic", "gemini"]).default("anthropic"),
   ANTHROPIC_API_KEY: z.string().min(1).optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
+  GOOGLE_AI_API_KEY: z.string().min(1).optional(), // Support both names
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 })
 
@@ -36,6 +37,7 @@ const processEnv = {
   AI_PROVIDER: process.env.AI_PROVIDER,
   ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
   NODE_ENV: process.env.NODE_ENV,
 }
 
@@ -84,8 +86,8 @@ if (env.AI_PROVIDER === "anthropic" && !env.ANTHROPIC_API_KEY) {
   throw new Error("ANTHROPIC_API_KEY is required when AI_PROVIDER is set to 'anthropic'")
 }
 
-if (env.AI_PROVIDER === "gemini" && !env.GEMINI_API_KEY) {
-  throw new Error("GEMINI_API_KEY is required when AI_PROVIDER is set to 'gemini'")
+if (env.AI_PROVIDER === "gemini" && !env.GEMINI_API_KEY && !env.GOOGLE_AI_API_KEY) {
+  throw new Error("GEMINI_API_KEY or GOOGLE_AI_API_KEY is required when AI_PROVIDER is set to 'gemini'")
 }
 
 export { env }

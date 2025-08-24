@@ -135,7 +135,8 @@ export class AIRouter implements AIProvider {
       }
 
       // Initialize Gemini provider if API key is available
-      if (process.env.GOOGLE_AI_API_KEY) {
+      // Support both GEMINI_API_KEY and GOOGLE_AI_API_KEY
+      if (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY) {
         this.providers.set('gemini', new GeminiProvider());
       }
 
@@ -222,14 +223,23 @@ export class AIRouter implements AIProvider {
 
 // Factory function to create AIRouter with environment-based configuration
 export function createAIRouter(overrides: Partial<AIRouterConfig> = {}): AIRouter {
-  const defaultProvider: AIProviderType = (process.env.AI_PROVIDER as AIProviderType) || 'anthropic';
+  // Prioritize Gemini if GEMINI_API_KEY exists, otherwise use AI_PROVIDER env or default to anthropic
+  let defaultProvider: AIProviderType;
+  
+  if (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY) {
+    defaultProvider = 'gemini';
+    console.log('Gemini API key detected, using Gemini as primary provider');
+  } else if (process.env.AI_PROVIDER) {
+    defaultProvider = process.env.AI_PROVIDER as AIProviderType;
+  } else {
+    defaultProvider = 'anthropic';
+  }
   
   const config: AIRouterConfig = {
-    primaryProvider: defaultProvider,
-    fallbackProvider: defaultProvider === 'anthropic' ? 'gemini' : 'anthropic',
-    maxRetries: 3,
-    timeoutMs: 30000,
-    ...overrides,
+    primaryProvider: overrides.primaryProvider || defaultProvider,
+    fallbackProvider: overrides.fallbackProvider || (defaultProvider === 'anthropic' ? 'gemini' : 'anthropic'),
+    maxRetries: overrides.maxRetries || 3,
+    timeoutMs: overrides.timeoutMs || 30000,
   };
 
   return new AIRouter(config);

@@ -70,6 +70,13 @@ npx prisma db push
 5. **Run the development server**
 ```bash
 npm run dev
+
+# Or with API keys from command line (prioritizes Gemini if provided):
+GEMINI_API_KEY=your-key npm run dev
+ANTHROPIC_API_KEY=your-key npm run dev
+
+# Or with both (Gemini will be primary, Anthropic as fallback):
+GEMINI_API_KEY=your-gemini-key ANTHROPIC_API_KEY=your-anthropic-key npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the application.

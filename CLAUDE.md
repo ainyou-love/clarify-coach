@@ -96,7 +96,14 @@ return NextResponse.json({ data: result });
 - Character limits are enforced in UI components: Goal (100), Main Points (50 each), Pitch (150)
 
 ## Testing AI Integration Locally
-1. Set `AI_PROVIDER=anthropic` or `AI_PROVIDER=gemini` in `.env.local`
-2. Add corresponding API key
-3. Test with: `npm run dev` and submit a practice session
-4. Check console for provider fallback behavior
+1. Pass API keys via command line for quick testing:
+   ```bash
+   GEMINI_API_KEY=xxx npm run dev  # Uses Gemini as primary
+   ANTHROPIC_API_KEY=xxx npm run dev  # Uses Anthropic as primary
+   ```
+2. Or set in `.env.local`:
+   - `AI_PROVIDER=anthropic` or `AI_PROVIDER=gemini`
+   - Add corresponding API key
+3. Priority: GEMINI_API_KEY > AI_PROVIDER env > default (anthropic)
+4. Test with: Submit a practice session
+5. Check console for provider selection and fallback behavior

@@ -8,9 +8,9 @@ export class GeminiProvider implements AIProvider {
   private modelName = 'gemini-1.5-flash';
 
   constructor(apiKey?: string) {
-    const key = apiKey || process.env.GOOGLE_AI_API_KEY;
+    const key = apiKey || process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
     if (!key) {
-      throw new Error('Google AI API key is required');
+      throw new Error('Gemini API key is required (set GEMINI_API_KEY or GOOGLE_AI_API_KEY)');
     }
 
     this.client = new GoogleGenerativeAI(key);
