@@ -34,15 +34,15 @@ export function PitchEditor({ value, onChange, maxLength = 150, error }: PitchEd
       <CardHeader>
         <CardTitle>One-Breath Pitch</CardTitle>
         <CardDescription>
-          Craft a concise summary that captures your key message in one breath. This should be punchy and memorable.
+          <strong className="text-primary">Ultimate Conciseness Test:</strong> Condense the entire scenario into 150 chars max. Make every word count!
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="pitch-editor">Your pitch</Label>
+          <Label htmlFor="pitch-editor">Your ultra-concise pitch (max {maxLength} chars)</Label>
           <Textarea
             id="pitch-editor"
-            placeholder="e.g., We exceeded our revenue targets by 25% this quarter thanks to our team's dedication, and now we're perfectly positioned to lead the market with strategic technology investments."
+            placeholder="e.g., Q3: +25% revenue. Need $50K tech investment to maintain lead. Team ready. Approval needed by Friday."
             value={value}
             onChange={(e) => onChange(e.target.value)}
             className={cn(
@@ -85,13 +85,14 @@ export function PitchEditor({ value, onChange, maxLength = 150, error }: PitchEd
           </div>
         )}
 
-        <div className="p-3 bg-muted rounded-md">
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
           <div className="text-sm">
-            <div className="font-medium mb-1">Tips for a great one-breath pitch:</div>
-            <ul className="text-muted-foreground space-y-1 list-disc list-inside">
-              <li>Focus on your main benefit or outcome</li>
-              <li>Use active voice and strong verbs</li>
-              <li>End with a clear call to action or next step</li>
+            <div className="font-medium mb-1 text-amber-800">🎯 Conciseness Tips:</div>
+            <ul className="text-amber-700 space-y-1 list-disc list-inside">
+              <li>Remove all filler words (very, really, just, etc.)</li>
+              <li>Use numbers instead of words (3 vs three)</li>
+              <li>Replace phrases with single words</li>
+              <li>Focus on WHAT and WHY, skip the HOW</li>
             </ul>
           </div>
         </div>

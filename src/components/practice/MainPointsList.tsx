@@ -34,7 +34,7 @@ export function MainPointsList({ points, onChange, maxLength = 50, errors = {} }
       <CardHeader>
         <CardTitle>Main Points</CardTitle>
         <CardDescription>
-          Identify the 3 most important points you want to communicate. Keep each point concise and focused.
+          <strong className="text-primary">Conciseness Challenge:</strong> Extract the 3 MOST critical points from the scenario. Max 50 chars each!
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -49,17 +49,17 @@ export function MainPointsList({ points, onChange, maxLength = 50, errors = {} }
               <div className="flex items-center gap-2">
                 {getCompletionIcon(point)}
                 <Label htmlFor={`point-${index}`}>
-                  Point {index + 1}
+                  Point {index + 1} (max {maxLength} chars)
                 </Label>
               </div>
               <Input
                 id={`point-${index}`}
                 placeholder={
                   index === 0 
-                    ? "e.g., Our revenue grew 25% this quarter" 
+                    ? "e.g., Revenue +25% Q3" 
                     : index === 1
-                    ? "e.g., Customer satisfaction is at an all-time high"
-                    : "e.g., We need to invest in new technology now"
+                    ? "e.g., Need $50K for new tech"
+                    : "e.g., Deploy by month-end"
                 }
                 value={point}
                 onChange={(e) => handlePointChange(index, e.target.value)}
@@ -71,15 +71,15 @@ export function MainPointsList({ points, onChange, maxLength = 50, errors = {} }
                   <span className="text-destructive">{hasError}</span>
                 ) : (
                   <span className="text-muted-foreground">
-                    Make it specific and impactful
+                    💡 Use numbers, skip articles, be direct
                   </span>
                 )}
                 <span className={cn(
-                  "text-muted-foreground",
+                  "text-muted-foreground font-medium",
                   isNearLimit && !isOverLimit && "text-orange-500",
                   isOverLimit && "text-destructive"
                 )}>
-                  {remainingChars}/{maxLength}
+                  {remainingChars} left
                 </span>
               </div>
             </div>

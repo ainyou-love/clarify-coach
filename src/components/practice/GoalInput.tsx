@@ -22,14 +22,14 @@ export function GoalInput({ value, onChange, maxLength = 100, error }: GoalInput
       <CardHeader>
         <CardTitle>Communication Goal</CardTitle>
         <CardDescription>
-          What do you want to achieve with your communication? Be specific about your desired outcome.
+          <strong className="text-primary">Conciseness Challenge:</strong> Summarize your goal in 100 characters or less. What's the ONE key outcome?
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
-        <Label htmlFor="goal-input">Your goal</Label>
+        <Label htmlFor="goal-input">Your concise goal (max {maxLength} chars)</Label>
         <Input
           id="goal-input"
-          placeholder="e.g., Get approval for budget increase, Motivate team for Q4 push, Explain new process clearly"
+          placeholder="e.g., Get 20% budget increase, Boost Q4 morale, Clarify new workflow"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={cn(error && "border-destructive")}
@@ -40,15 +40,15 @@ export function GoalInput({ value, onChange, maxLength = 100, error }: GoalInput
             <span className="text-destructive">{error}</span>
           ) : (
             <span className="text-muted-foreground">
-              Be specific about what you want to accomplish
+              💡 Tip: Remove filler words, focus on the core objective
             </span>
           )}
           <span className={cn(
-            "text-muted-foreground",
+            "text-muted-foreground font-medium",
             isNearLimit && !isOverLimit && "text-orange-500",
             isOverLimit && "text-destructive"
           )}>
-            {remainingChars} characters remaining
+            {remainingChars} chars left
           </span>
         </div>
       </CardContent>
